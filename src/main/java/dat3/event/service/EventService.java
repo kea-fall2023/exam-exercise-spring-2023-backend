@@ -46,7 +46,8 @@ public class EventService {
             event.setLocation(location);
         }
         Event savedEvent = eventRepository.save(event);
-        return toEventResponse(savedEvent,false,false,true);
+        //return toEventResponse(savedEvent,false,false,true);
+        return toEventResponse(savedEvent,true,false,true);
     }
 
     public EventResponse editEvent(EventRequest eventRequest,Long id) {

@@ -51,8 +51,11 @@ public class EventServiceTest {
     event.setId(100l);
     event.setCreated(LocalDateTime.now());
     event.setUpdated(LocalDateTime.now());
+    event.setLocation(mockLocation);
     when(eventRepository.save(any(Event.class))).thenReturn(event);
 
+
+    //Dette er hvad jeg reelt tester
     EventResponse result = eventService.createEvent(eventRequest);
 
     // Assert
@@ -61,6 +64,7 @@ public class EventServiceTest {
     assertEquals(event.getDate(), result.getDate());
     assertNotNull(result.getCreated());
     assertNotNull(result.getUpdated());
-    assertNull(result.getLocationId());
+    assertNotNull(result.getLocationId());
+    assertEquals(0l,result.getLocationId());
   }
 }

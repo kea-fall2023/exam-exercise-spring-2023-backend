@@ -6,7 +6,6 @@ import dat3.event.dto.EventResponse;
 import dat3.event.service.EventService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,9 +27,9 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<EventResponse> createEvent(@RequestBody EventRequest eventRequest) {
+    public EventResponse createEvent(@RequestBody EventRequest eventRequest) {
         EventResponse createdEvent = eventService.createEvent(eventRequest);
-        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+        return createdEvent;
     }
 
     @DeleteMapping("/{id}")
