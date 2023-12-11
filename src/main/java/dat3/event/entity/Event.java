@@ -31,7 +31,7 @@ public class Event extends DateTimeInfo {
     private Location location;
 
     @OneToMany(mappedBy = "event")
-    private List<EventAttendee> eventAttendees = new ArrayList<>();
+    List<EventAttendee> eventAttendees = new ArrayList<>();
 
     public void addEventAttendee(EventAttendee eventAttendee){
         eventAttendees.add(eventAttendee);

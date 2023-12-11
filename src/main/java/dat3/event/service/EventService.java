@@ -45,8 +45,8 @@ public class EventService {
                     .orElseThrow(() -> new RuntimeException("Location not found"));
             event.setLocation(location);
         }
-        eventRepository.save(event);
-        return toEventResponse(event,false,false,true);
+        Event savedEvent = eventRepository.save(event);
+        return toEventResponse(savedEvent,false,false,true);
     }
 
     public EventResponse editEvent(EventRequest eventRequest,Long id) {
@@ -97,12 +97,12 @@ public class EventService {
         return ResponseEntity.ok("{\"count\":" + eventRepository.count()+"}");
     }
 
-    public EventResponse getEventByName(String name,boolean includeDates) {
-        Event event = eventRepository.findByName(name).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Event not found"));
-        return toEventResponse(event,false,false,includeDates);
+    public List<EventResponse> getEventByName(String name,boolean includeDates) {
+        List<Event> events = eventRepository.findByName(name);
+        return events.stream().map(e -> toEventResponse(e,false,false,includeDates)).toList();
     }
 
-    public EventResponse registerAttendee(Long eventId, String attendeeId,boolean isAdmin) {
+    public EventResponse registerEventForAttendee(Long eventId, String attendeeId, boolean isAdmin) {
         Event event = eventRepository.findById(eventId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Event not found"));
         Attendee attendee = attendeeRepository.findById(attendeeId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Attendee not found"));
         if(event.getCapacity() <= event.getEventAttendees().size()){
@@ -110,8 +110,7 @@ public class EventService {
         }
         EventAttendee eventAttendee = new EventAttendee(event,attendee);
         eventAttendeeRepository.save(eventAttendee);
-        //eventRepository.save(event);
-        return toEventResponse(event,false,true,isAdmin);
+        return toEventResponse(event,true,true,isAdmin);
     }
 
     public String unregisterEvent(Long EventAttendeeId, String username){

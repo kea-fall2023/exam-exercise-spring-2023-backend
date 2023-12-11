@@ -56,7 +56,7 @@ public class EventController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         boolean isAdmin = roles.contains("ADMIN");
-        return eventService.registerAttendee(eventId, principal.getName(),isAdmin);
+        return eventService.registerEventForAttendee(eventId, principal.getName(),isAdmin);
     }
 
     @DeleteMapping("/unregister/{eventId}")
